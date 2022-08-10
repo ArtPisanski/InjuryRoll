@@ -16,11 +16,7 @@ async def on_ready():
   
 @bot.command()
 async def info(user):
-  await user.send("Usage:\n`!roll [Player Name]`    - Rolls for injury \n\nInjury bot coded by @Arturo\n`Ver 1.1`")
-
-@bot.command()
-async def list(user):
-  await user.send(db.keys())
+  await user.send("Usage:\n`!roll [Player Name]`    - Rolls for injury \n\nInjury bot coded by @Arturo\n`Ver 1.2`")
 
 @bot.command()
 async def roll(user, *args):
@@ -32,8 +28,7 @@ async def roll(user, *args):
   bpStr = 'ERROR'
   days = 0
 
-  print (user.author)
-  print ("INIT injury roll..")
+  print (str(user.author) + " initiated an injury roll..")
   
   if type == 1: # Head and Neck
     bodypart = random.randint(1,2)
@@ -294,23 +289,8 @@ async def roll(user, *args):
       sevStr = 'Severe (Season Ending)'
       days = random.randint(24,32)
       
-  print (" INT type = "+ str(type) + "\n INT bodypart = " + str(bodypart))
-  print (" " + str(sevStr) + " " + str(bpStr))
-
-  # clipboard = f':ambulance: {playername} \n:clipboard: Subbed Out: `  ` \n:adhesive_bandage: {sevStr} {bpStr} \n:hourglass: Out for {days} matches \n:calendar: `gameweek` `match` \n:arrows_counterclockwise: `return date` \n`  ` `@manager`'
+  print (str(playername) + ": " + str(sevStr) + " " + str(bpStr))
   
-  # clipboard = "ohhh baby"
-
-  # await user.send('Injury roll copied to clipboard..')
-  # pyclip.copy('Textings')
-  
-  await user.send(f':ambulance: {playername} \n:clipboard: Subbed Out: `  ` \n:adhesive_bandage: {sevStr} {bpStr} \n:hourglass: Out for {days} matches \n:calendar: `gameweek` `match` \n:arrows_counterclockwise: `return date` \n`  ` `@manager`')
-
-  """
-  db[playerID] = {playername} + " - " + {sevStr} + "(" + {days} + " days"
-  print ({playername} + " - " + {sevStr} + "(" + {days} + " days")
-  print ({playerID})
-  playerID += 1
-  """
+  await user.send(f':ambulance: {playername} \n:clipboard: Subbed Out:\n:adhesive_bandage: {sevStr} {bpStr} \n:hourglass: Out for {days} matches \n:calendar: `gameweek` `match` \n:arrows_counterclockwise: `return date` \n`  `  `@manager`')
   
 bot.run (TOKEN)
