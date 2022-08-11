@@ -11,6 +11,11 @@ days = 0
 goldEmoji = "<:Gold:1006939406130749470>"
 silverEmoji = "<:Silver:1006939173070065844>"
 bronzeEmoji = "<:Bronze:1006939431632117790>"
+checkEmoji = "<:greencheck:1007111198954766389>"
+bandageEmoji = ":adhesive_bandage:"
+wheelchairEmoji = ":man_in_manual_wheelchair:"
+bedEmoji = ":sleeping_accommodation:"
+hospitalEmoji = ":hospital:"
 
 bot = commands.Bot(command_prefix='!')
 # playerID = 0
@@ -21,7 +26,7 @@ async def on_ready():
   
 @bot.command()
 async def info(user):
-  await user.send("Usage:\n`!roll [Player Name]`                - Rolls for injury \n`!rollSilver [Player Name]`   - Rolls a Silver Medic\n`!rollGold [Player Name]`       - Rolls a Gold Medic\n\nInjury bot coded by @Arturo (ver 1.84)")
+  await user.send("Usage:\n`!roll [Player Name]`                - Rolls for injury \n`!rollSilver [Player Name]`   - Rolls a Silver Medic\n`!rollGold [Player Name]`       - Rolls a Gold Medic\n\nInjury bot coded by @Arturo (ver 1.90)")
 
 @bot.command()
 async def roll(user, *args):
@@ -81,49 +86,56 @@ async def medicRoll(user, playername, medicType):
         days = days - medic
       else:
         medic = 0
+      print ("Medic Bonus: " + str(medic) + " (" + medicType + ")")
     elif sevStr == 'Severe' or 'Severe (Season Ending)':
       medic = random.randint (1,12) # 25%
       if medic <= 3:
         days = days - medic
       else:
         medic = 0
-    print ("Medic Bonus: " + str(medic) + " (" + medicType + ")")
-
+      print ("Medic Bonus: " + str(medic) + " (" + medicType + ")")
+      
     await output(user, playername, sevStr, bpStr, goldEmoji, medic, days)
     
-async def output(user, playername, sevStr, bpStr, emoji, medic, days):
+async def output(user, playername, sevStr, bpStr, emoji1, medic, days):
 
-  await user.send(f':ambulance: {playername} \n:clipboard: Subbed Out: \n:adhesive_bandage: {sevStr} {bpStr} \n{emoji} Medical Staff Bonus: {medic*-1} days \n:hourglass: Out for {days} matches \n:calendar: `gameweek` `match` \n:arrows_counterclockwise: `return date` \n`  ` `@manager`')
+  await checkDays(days)
 
-async def silverRoll():
-  global sevStr
-  global bpStr
-  global medic
-  global days
+  await randDoctor()
   
-  if sevStr == 'Minor':
-    bronze = random.randint (1,4)
-    if bronze == 1:
-      days = days - bronze
-    else:
-      bronze = 0
+  await user.send(f':ambulance: {playername} \n:clipboard: Subbed Out: \n{doctorEmoji} {sevStr} {bpStr} \n{emoji1} Medical Staff Bonus: {medic*-1} days \n:hourglass: Out for {days} matches {emoji2}\n:calendar: `gameweek` `match` \n:arrows_counterclockwise: `return date` \n`  ` `@manager`')
 
-async def goldRoll():
-  global sevStr
-  global bpStr
-  global medic
-  global days
-  
-  if sevStr == 'Minor':
-    bronze = random.randint (1,4)
-    if bronze == 1:
-      days = days - bronze
-    else:
-      bronze = 0
+async def checkDays(days):
+  global checkEmoji
+  global bandageEmoji
+  global wheelchairEmoji
+  global bedEmoji
+  global hospitalEmoji
+  global emoji2
+
+  if (days <= 0):
+    days = 0
+    emoji2 = checkEmoji
+  elif (days <= 3):
+    emoji2 = bandageEmoji
+  elif (days <= 6):
+    emoji2 = wheelchairEmoji
+  elif (days <=9):
+    emoji2 = bedEmoji
+  elif (days >9):
+    emoji2 = hospitalEmoji
+
+async def randDoctor():
+
+  global doctorEmoji
+
+  doctorsList = [':health_worker:', ":man_health_worker:", ":woman_health_worker:"]
+
+  doctorEmoji = random.choice(doctorsList)
 
 async def injuryRoll(user):
 
-  print ("-----------------------------------------------")
+  print ("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 
   type = random.randint(1,7)
   severity = random.randint(1,5)
